@@ -1,0 +1,4 @@
+disnake
+pillow
+python-resize-image
+Wand
