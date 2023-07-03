@@ -184,16 +184,13 @@ class Imgen(commands.Cog):
 
         await inter.response.defer()
 
-        trash = user.display_avatar
-        trash = await trash.read()
-        trash = io.BytesIO(trash)
-        trash = Image.open(trash).convert("RGBA").resize((175, 175))
+        trash = await self.bot.utils.parseAvatar(
+            user.display_avatar, True, (175, 175)
+        )
 
-        face = inter.user.display_avatar
-        face = await face.read()
-        face = io.BytesIO(face)
-        face = Image.open(face).convert("RGBA").resize((175, 175))
-        face = face.rotate(5, expand=True, resample=Image.BICUBIC)
+        face = await self.bot.utils.parseAvatar(
+            inter.user.display_avatar, True, (175, 175), True, 5
+        )
 
         base = Image.open("src/utils/assets/trash/image.png")
         hand = Image.open("src/utils/assets/trash/hand.png")
