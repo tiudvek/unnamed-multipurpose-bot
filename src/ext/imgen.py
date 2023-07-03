@@ -1,6 +1,6 @@
-'''
+"""
 Thanks to AlexFlipnote and the Dank Memer people for a lot of the code here
-'''
+"""
 
 import random
 
@@ -55,7 +55,7 @@ achievement_icons = {
     "42": "Bread",
     "43": "Wooden sword",
     "44": "Bone",
-    "45": "Oak log"
+    "45": "Oak log",
 }
 
 
@@ -65,28 +65,32 @@ class Imgen(commands.Cog):
 
     @commands.slash_command()
     async def achievement(
-            self,
-            inter: disnake.ApplicationCommandInteraction,
-            text: str,
-            title: str = 'Achievement get!'
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        text: str,
+        title: str = "Achievement get!",
     ):
-        '''
+        """
         Make a minecraft achievement
 
         Parameters
         ----------
         text: The text of the achievement
-        '''
+        """
 
         color = (255, 255, 0, 255)
         icon = random.randint(1, 45)
 
         randomimage = icon if icon else random.randint(1, 45)
-        front = Image.open(f"src/utils/assets/achievement/{randomimage}.png")
+        front = Image.open(
+            f"src/utils/assets/achievement/{randomimage}.png"
+        )  # Fuck you, Windows users >:)
 
         txt = Image.new("RGBA", (len(text) * 15, 64))
 
-        fnt = ImageFont.truetype('src/utils/assets/_fonts/Minecraft.ttf', 16)
+        fnt = ImageFont.truetype(
+            "src/utils/assets/_fonts/Minecraft.ttf", 16
+        )  # Fuck you, Windows users >:)
         drawn = ImageDraw.Draw(txt)
 
         width, height = drawn.textsize(text, font=fnt)
@@ -94,8 +98,12 @@ class Imgen(commands.Cog):
 
         mid = Image.new("RGBA", (width + 20, 64), (255, 255, 255, 0))
 
-        midd = Image.open("src/utils/assets/achievement/achmid.png")
-        end = Image.open("src/utils/assets/achievement/achend.png")
+        midd = Image.open(
+            "src/utils/assets/achievement/achmid.png"
+        )  # Fuck you, Windows users >:)
+        end = Image.open(
+            "src/utils/assets/achievement/achend.png"
+        )  # Fuck you, Windows users >:)
 
         for i in range(0, width):
             mid.paste(midd, (i, 0))
@@ -125,29 +133,70 @@ class Imgen(commands.Cog):
         pass
 
     @trash.sub_command()
-    async def peterparker(self, inter: disnake.ApplicationCommandInteraction, user: disnake.User):
-        '''
-        Say that someone is trash
+    async def peterparker(
+        self, inter: disnake.ApplicationCommandInteraction, user: disnake.User
+    ):
+        """
+        Say that someone is equal to trash
 
-        Parameter
-        ---------
-        user: The user that is trash
-        '''
+        Parameters
+        ----------
+        user: The user that is equal to trash
+        """
         avatar = user.display_avatar
         avatar = await avatar.read()
         avatar = io.BytesIO(avatar)
-        avatar = Image.open(avatar).convert('RGBA').resize((480, 480))
+        avatar = Image.open(avatar).convert("RGBA").resize((480, 480))
 
-        base = Image.open('src/utils/assets/trash/peter.jpg').convert('RGBA')
+        base = Image.open("src/utils/assets/trash/peter.jpg").convert(
+            "RGBA"
+        )  # Fuck you, Windows users >:)
 
         avatar = avatar.filter(ImageFilter.GaussianBlur(radius=6))
         base.paste(avatar, (480, 0), avatar)
-        base = base.convert('RGBA')
+        base = base.convert("RGBA")
 
         bio = io.BytesIO()
-        base.save(bio, format='png')
+        base.save(bio, format="png")
         bio.seek(0)
-        file = disnake.File(bio, 'image.png')
+        file = disnake.File(bio, "image.png")
+
+        await inter.send(file=file)
+
+    @trash.sub_command()
+    async def belongs(
+        self, inter: disnake.ApplicationCommandInteraction, user: disnake.User
+    ):
+        """
+        Say that someone belongs in the trash can
+
+        Parameters
+        ----------
+        user: The person that belongs in the trash
+        """
+
+        trash = user.display_avatar
+        trash = await trash.read()
+        trash = io.BytesIO(trash)
+        trash = Image.open(trash).convert("RGBA").resize((175, 175))
+
+        face = inter.user.display_avatar
+        face = await face.read()
+        face = io.BytesIO(face)
+        face = Image.open(face).convert("RGBA").resize((175, 175))
+        face = face.rotate(5, expand=True, resample=Image.BICUBIC)
+
+        base = Image.open("src/utils/assets/trash/image.png")
+        hand = Image.open("src/utils/assets/trash/hand.png")
+
+        base.paste(face, (375, 80), face)
+        base.paste(trash, (105, 190), trash)
+        base.paste(hand, (156, 164), hand)
+
+        bio = io.BytesIO()
+        base.save(bio, format="png")
+        bio.seek(0)
+        file = disnake.File(bio, "image.png")
 
         await inter.send(file=file)
 
