@@ -270,6 +270,38 @@ class Imgen(commands.Cog):
 
         await inter.send(file=file)
 
+    @filters.sub_command()
+    async def contour(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        target: Optional[Union[disnake.User, disnake.Member]] = None,
+    ):
+        """
+        Apply contour on someone
+
+        Parameters
+        ----------
+        target: The target of the contour; If none, defaults to the author
+        """
+
+        await inter.response.defer()
+
+        target = target or inter.user  # I did a funny
+        avatar = (  # Luckily I have a formatter
+            Image.open(io.BytesIO(await target.display_avatar.read()))
+            .convert("RGBA")
+            .resize((500, 500))
+        )
+
+        result = avatar.filter(ImageFilter.CONTOUR)
+
+        bio = io.BytesIO()
+        result.save(bio, format="png")
+        bio.seek(0)
+        file = disnake.File(bio, "image.png")
+
+        await inter.send(file=file)
+
 
 def setup(bot):
     bot.add_cog(Imgen(bot))
