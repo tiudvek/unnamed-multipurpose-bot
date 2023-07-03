@@ -4,6 +4,8 @@ Thanks to AlexFlipnote and the Dank Memer people for a lot of the code here
 
 import random
 
+from typing import Optional, Union
+
 import io
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
@@ -130,7 +132,7 @@ class Imgen(commands.Cog):
 
     @commands.slash_command()
     async def trash(self, inter: disnake.ApplicationCommandInteraction):
-        '''Container for trash subcommands'''
+        """Container for trash subcommands"""
         pass
 
     @trash.sub_command()
@@ -202,12 +204,40 @@ class Imgen(commands.Cog):
         await inter.send(file=file)
 
     @commands.slash_command()
-    async def filters(
-            self,
-            inter: disnake.ApplicationCommandInteraction
-    ):
-        '''Container for the filter subcommands'''
+    async def filters(self, inter: disnake.ApplicationCommandInteraction):
+        """Container for the filter subcommands"""
         pass
+
+    @filters.sub_command()
+    async def blur(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        radius: int,
+        target: Optional[Union[disnake.User, disnake.Member]] = None,
+    ):
+        """
+        Blur someone
+
+        Parameters
+        ----------
+        target: The target of the blur; If none, defaults to the author
+        """
+
+        target = target or inter.user  # I did a funny
+        avatar = (  # Luckily I have a formatter
+            Image.open(io.BytesIO(await target.display_avatar.read()))
+            .convert("RGBA")
+            .resize((500, 500))
+        )
+
+        result = avatar.filter(ImageFilter.GaussianBlur(radius=radius))
+
+        bio = io.BytesIO()
+        result.save(bio, format="png")
+        bio.seek(0)
+        file = disnake.File(bio, "image.png")
+
+        await inter.send(file=file)
 
 
 def setup(bot):
