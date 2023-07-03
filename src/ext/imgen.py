@@ -221,6 +221,7 @@ class Imgen(commands.Cog):
         Parameters
         ----------
         target: The target of the blur; If none, defaults to the author
+        radius: The ammount of blur to apply
         """
 
         target = target or inter.user  # I did a funny
