@@ -230,10 +230,9 @@ class Imgen(commands.Cog):
         await inter.response.defer()
 
         target = target or inter.user  # I did a funny
-        avatar = (  # Luckily I have a formatter
-            Image.open(io.BytesIO(await target.display_avatar.read()))
-            .convert("RGBA")
-            .resize((500, 500))
+
+        avatar = await self.bot.utils.parseAvatar(
+            target.display_avatar, True, (500, 500)
         )
 
         result = avatar.filter(ImageFilter.GaussianBlur(radius=radius))
@@ -262,10 +261,9 @@ class Imgen(commands.Cog):
         await inter.response.defer()
 
         target = target or inter.user  # I did a funny
-        avatar = (  # Luckily I have a formatter
-            Image.open(io.BytesIO(await target.display_avatar.read()))
-            .convert("RGBA")
-            .resize((500, 500))
+
+        avatar = await self.bot.utils.parseAvatar(
+            target.display_avatar, True, (500, 500)
         )
 
         result = avatar.filter(ImageFilter.EMBOSS)
@@ -294,10 +292,9 @@ class Imgen(commands.Cog):
         await inter.response.defer()
 
         target = target or inter.user  # I did a funny
-        avatar = (  # Luckily I have a formatter
-            Image.open(io.BytesIO(await target.display_avatar.read()))
-            .convert("RGBA")
-            .resize((500, 500))
+
+        avatar = await self.bot.utils.parseAvatar(
+            target.display_avatar, True, (500, 500)
         )
 
         result = avatar.filter(ImageFilter.CONTOUR)
