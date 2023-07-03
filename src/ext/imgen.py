@@ -130,6 +130,7 @@ class Imgen(commands.Cog):
 
     @commands.slash_command()
     async def trash(self, inter: disnake.ApplicationCommandInteraction):
+        '''Container for trash subcommands'''
         pass
 
     @trash.sub_command()
@@ -199,6 +200,14 @@ class Imgen(commands.Cog):
         file = disnake.File(bio, "image.png")
 
         await inter.send(file=file)
+
+    @commands.slash_command()
+    async def filters(
+            self,
+            inter: disnake.ApplicationCommandInteraction
+    ):
+        '''Container for the filter subcommands'''
+        pass
 
 
 def setup(bot):
