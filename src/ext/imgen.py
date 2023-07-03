@@ -151,10 +151,9 @@ class Imgen(commands.Cog):
 
         await inter.response.defer()
 
-        avatar = user.display_avatar
-        avatar = await avatar.read()
-        avatar = io.BytesIO(avatar)
-        avatar = Image.open(avatar).convert("RGBA").resize((480, 480))
+        avatar = await self.bot.utils.parseAvatar(
+            user.display_avatar, True, (480, 480)
+        )
 
         base = Image.open("src/utils/assets/trash/peter.jpg").convert(
             "RGBA"
