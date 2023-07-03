@@ -80,6 +80,8 @@ class Imgen(commands.Cog):
         text: The text of the achievement
         """
 
+        await inter.response.defer()
+
         color = (255, 255, 0, 255)
         icon = random.randint(1, 45)
 
@@ -146,6 +148,9 @@ class Imgen(commands.Cog):
         ----------
         user: The user that is equal to trash
         """
+
+        await inter.response.defer()
+
         avatar = user.display_avatar
         avatar = await avatar.read()
         avatar = io.BytesIO(avatar)
@@ -177,6 +182,8 @@ class Imgen(commands.Cog):
         ----------
         user: The person that belongs in the trash
         """
+
+        await inter.response.defer()
 
         trash = user.display_avatar
         trash = await trash.read()
@@ -224,6 +231,8 @@ class Imgen(commands.Cog):
         radius: The ammount of blur to apply
         """
 
+        await inter.response.defer()
+
         target = target or inter.user  # I did a funny
         avatar = (  # Luckily I have a formatter
             Image.open(io.BytesIO(await target.display_avatar.read()))
@@ -253,6 +262,8 @@ class Imgen(commands.Cog):
         ----------
         target: The target of the emboss; If none, defaults to the author
         """
+
+        await inter.response.defer()
 
         target = target or inter.user  # I did a funny
         avatar = (  # Luckily I have a formatter
