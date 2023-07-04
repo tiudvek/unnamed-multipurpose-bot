@@ -3,6 +3,13 @@ class XataDBUtils:
         self.client = client
 
     def new_user(self, userid: int, gayness: int):
-        record = {"user_id": userid, "gayness": gayness}
+        record = {"gayness": gayness}
 
-        self.client.records().insertRecord("users", record)
+        self.client.records().insertRecordWithID("users", str(userid), record)
+
+    def check_exists(self, id: int):
+        records = self.client.records()
+
+        userQuery = records.getRecord("users", id)
+
+        return False if userQuery.status_code == 404 else True

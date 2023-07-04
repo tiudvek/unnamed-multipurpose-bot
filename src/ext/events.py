@@ -11,8 +11,10 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_slash_command(self, inter):
-        exists = self.bot.xata.exists("users", {"user_id": 1})
-        print(exists)
+        if self.bot.db.check_exists(inter.user.id):
+            pass
+        else:
+            self.bot.db.new_user(inter.user.id, random.randint(0, 100))
 
 
 def setup(bot):
